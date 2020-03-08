@@ -49,7 +49,7 @@ def get_data(url, team):
     Get data from each team and each URL
     The data on the site is divided by Teams
     '''
-
+    # define empty dictionary
     names, positions, heights, brands, injury, two_ways, all_stars, rookies, ratings = (
         [] for i in range(9))
 
