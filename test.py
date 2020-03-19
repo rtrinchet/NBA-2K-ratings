@@ -1,10 +1,12 @@
 
-from get_data import get_teams_dict, get_soup, get_data, combine_df, get_stats
+from get_data import get_teams_dict, get_soup, get_data, combine_df, get_stats, save_as_csv
 import pandas as pd
 # ## Ratings ----------
 # start getting  list of the url where we can obtain all the data: one URL per team
 url = 'https://nba2k19.2kratings.com/current-teams-on-nba-2k19'
+
 teams_dict = get_teams_dict(url)
+
 ratings = combine_df(teams_dict, teams_dict)
 
 # # Creamos el fichero
@@ -28,6 +30,7 @@ complete_stats_1718.columns = ['Player', 'Pos', 'Age', 'Tm', 'G', 'GS', 'MPG', '
        'MP_Total', 'PER', 'TS.pct', '3PAr', 'FTr', 'ORB.pct', 'DRB.pct', 'TRB.pct',
        'AST.pct', 'STL.pct', 'BLK.pct', 'TOV.pct', 'USG.pct', 'empty1', 'OWS',
        'DWS', 'WS', 'WS/48', 'empty2', 'OBPM', 'DBPM', 'BPM', 'VORP']
+
 # drop columns with NA created with the scraping part
 stats  = complete_stats_1718.drop(['empty1', 'empty2'], axis = 1)
 
@@ -36,7 +39,7 @@ stats  = complete_stats_1718.drop(['empty1', 'empty2'], axis = 1)
 df = pd.merge(ratings, stats, how='inner', left_on="name", right_on="Player").drop('Player', axis = 1) # inner join
 
 
-df.to_csv("2019_ratings_stats.csv", index=False)
+save_as_csv(df, "2019_ratings_stats.csv")
 
 print(df.head().T)
 

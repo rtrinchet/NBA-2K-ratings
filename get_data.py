@@ -49,6 +49,7 @@ def get_data(url, team):
     Get data from each team and each URL
     The data on the site is divided by Teams
     '''
+    print('- Getting data for {} team'.format(team))
     # define empty dictionary
     names, positions, heights, brands, injury, two_ways, all_stars, rookies, ratings = (
         [] for i in range(9))
@@ -116,6 +117,7 @@ def get_data(url, team):
                            'height': heights, 'brand': brands, 'all_star': all_stars,
                            'injured': injury, 'two_way': two_ways, 'rookie': rookies,
                            'rating': ratings})
+    print('    Done. Output size: {}'.format(df_rat.shape))
     return df_rat
 
 
@@ -123,12 +125,13 @@ def combine_df(url_teams, dict_team_url):
     '''
     Combine the datasets obtained from each iteration of get_data
     '''
-    print('INFO: getting players 2K data')
+    print('- Getting players 2K data') #TODO add season info
     df_list = []
     for url in url_teams:
         df = get_data(url, dict_team_url[url])
         df_list.append(df)
     combined_df = pd.concat(df_list)
+    print('    Done. Output size: {}'.format(combined_df.shape))
     return combined_df
 
 
@@ -136,7 +139,7 @@ def get_stats(url):
 
     # get contents
     soup = get_soup(url)
-    print('INFO: getting stats data')
+    print('- Getting stats data') #TODO add season info and advanced or normal stats in print
     col_names = []
     for i in range(1, len(soup.tbody.find_all('tr')[1].find_all('td'))+1):
         col_names.append(soup.thead.find_all(
@@ -169,5 +172,12 @@ def get_stats(url):
 
     # change blank spaces for NAs:
     stats_df = stats_df.replace(r'^\s*$', np.nan, regex=True)
-
+    print('    Done. Output size:{}'.format(stats_df.shape))
     return stats_df
+
+def save_as_csv(df, name):
+    '''
+    Saves a file to .csv in local
+    '''
+    df.to_csv(name, index=False)
+    print('File {} correctly saved as .csv'.format(name))
