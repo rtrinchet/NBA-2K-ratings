@@ -14,6 +14,7 @@ ratings = combine_df(teams_dict, teams_dict)
 
 
 # Stats for 17-18 season --------
+
 # normal
 stats_1718 = get_stats(
     'https://www.basketball-reference.com/leagues/NBA_2018_per_game.html')

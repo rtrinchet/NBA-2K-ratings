@@ -1,4 +1,9 @@
 # Organización proyecto NBA 2K
+## CORRECCIONES
+- Actualmente (22.03.20), se obtiene la puntuación del jugador en el momento de hacer web scrapping. Sería interesante obtener la puntuación del jugador al inicio de la temporada.
+
+- Hacer más robusto el scrapper para adaptarlo a otros años dónde hay más datos que extraer, como 3pt o dunk (2020)
+
 
 ## Tareas pendientes
 1. Asegurarnos que se pueden unir bien los datos de nba2k ratings con los datos de stats. En stats están llegando más datos de los que deberían.
@@ -19,6 +24,8 @@
 ## EDA
 
 1. Profundizar en el entendimiento de la relación entre las estadísticas y los ratings del año siguiente.
+
+
 
 ## Referencias que consultar
 Feature engineering
