@@ -198,6 +198,71 @@ def get_2018_data(url, team):
     print('    Done. Output size: {}'.format(df_rat.shape))
     return df_rat
 
+def get_2018_data_optimized(url, team):
+    '''
+    Optimized version with more pythonic expressions
+    Get data from each team and each URL
+    The data on the site is divided by Teams
+    '''
+    print('- Getting data for {} team'.format(team))
+    # define empty dictionary
+    names, positions, heights, brands, injury, two_ways, all_stars, rookies, ratings = (
+        [] for i in range(9))
+
+    # get contents
+    soup = get_soup(url)
+
+    names = [player.find_all("td")[1].a.text for player in table.find_all("tr")]
+    ratings = [player.find_all("td")[2].span.text for player in table.find_all("tr")]
+
+    positions = [player.find_all("td")[3].text for player in table.find_all("tr")]
+    heights = [player.find_all("td")[4].text for player in table.find_all("tr")]
+    names = [player.find_all("td")[1].a.text for player in table.find_all("tr")]
+    names = [player.find_all("td")[1].a.text for player in table.find_all("tr")]
+    # table containing all players
+    table = soup.find("tbody")
+
+    for player in table.find_all("tr"):
+
+        # check if all star
+        if len(player.find_all("td")[1].find_all("i", {"class": "fa fa-star"})) > 0:
+            all_star = 1
+        else:
+            all_star = 0
+        all_stars.append(all_star)
+
+        # check if injured
+        if len(player.find_all("td")[1].find_all("i", {"class": "fa fa-plus-circle"})) > 0:
+            injured = 1
+        else:
+            injured = 0
+        injury.append(injured)
+
+        # check if two-way
+        if len(player.find_all("td")[1].find_all("i", {"class": "fa fa-arrows-h"})) > 0:
+            two_way = 1
+        else:
+            two_way = 0
+        two_ways.append(two_way)
+
+        # check if rookie
+        if len(player.find_all("td")[1].find_all("small")) == 1:
+            rookie = 1
+        else:
+            rookie = 0
+        rookies.append(rookie)
+    
+    
+    
+    teams = [team for i in range(len(names))]
+    df_rat = pd.DataFrame({'name': names, 'team': teams, 'position': positions,
+                           'height': heights,'all_star': all_stars,
+                           'injured': injury, 'two_way': two_ways, 'rookie': rookies,
+                           'rating': ratings})
+    df_rat['brand'] = np.nan
+    df_rat['game'] = '2K18'
+    print('    Done. Output size: {}'.format(df_rat.shape))
+    return df_rat
 
 def combine_df(url_teams, dict_team_url, scrapper_function):
     '''
